@@ -1,0 +1,30 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  --spacing-large: 52px;
+  --spacing-normal: 28px;
+  --spacing-small: 20px;
+  --spacing-xlarge: 92px;
+  --spacing-xsmall: 16px;
+
+  --fontSize-small: 16px;
+  --fontSize-normal: 20px;
+  --fontSize-large: 24px;
+
+  --color-white: #FFFFFF;
+  --color-darkBlue: #1a1b27;
+  --color-black: #383945;
+  --color-lightBlue: #f4f5f7;
+
+  --maxWidth: 1024px;
+
+  --text-color: var(--color-black);
+  --background-color: var(--color-white);
+
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--fontSize-normal);
+}

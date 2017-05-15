@@ -1,0 +1,30 @@
+.header {
+  margin-bottom: var(--spacing-xlarge);
+  color: red;
+}
+
+.search {
+  margin-bottom: var(--spacing-xlarge);
+}
+
+.list {
+  display: grid;
+  grid-column-gap: var(--spacing-large);
+  grid-row-gap: var(--spacing-large);
+  grid-template-columns: repeat(4, 200px);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.manga-title {
+  color: var(--color-black);
+  display: block;
+  /*flex-basis: 64px;*/
+  flex-grow: 0;
+  font-size: var(--fontSize-normal);
+  font-weight: normal;
+}

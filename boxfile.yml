@@ -1,0 +1,25 @@
+run.config:
+  engine: elixir
+
+  extra_packages:
+    - nodejs
+    - inotify-tools
+
+  cache_dirs:
+    - node_modules
+
+  extra_path_dirs:
+    - node_modules/.bin
+
+  dev_packages:
+    - nodejs
+
+  fs_watch: true
+
+deploy.config:
+  extra_steps:
+    - yarn
+    - yarn run build
+
+web.man:
+  start: node-start mix phx.server

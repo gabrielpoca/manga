@@ -1,0 +1,22 @@
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.label {
+  font-size: var(--fontSize-small);
+  margin-right: var(--spacing-small);
+  text-transform: uppercase;
+}
+
+.input {
+  background-color: var(--color-lightBlue);
+  border: 0;
+  flex-grow: 1;
+  font-size: var(--fontSize-small);
+  height: 60px;
+  padding-left: var(--fontSize-small);
+  text-transform: uppercase;
+}

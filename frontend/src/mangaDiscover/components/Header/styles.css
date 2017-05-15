@@ -1,0 +1,13 @@
+.root {
+  align-items: center;
+  display: flex;
+  height: 80px;
+  padding: 0 var(--spacing-normal);
+}
+
+.title {
+  color: var(--color-black);
+  font-size: var(--fontSize-small);
+  text-decoration: none;
+  text-transform: uppercase;
+}
