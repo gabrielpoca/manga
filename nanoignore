@@ -1,0 +1,8 @@
+.DS_Store
+.git/
+.gitignore
+/application/logs/
+node_modules
+frontend/build
+_build
+deps
