@@ -13,21 +13,21 @@ declare type SetChapterDispatch = (action: SetChapterAction | SetMangaAction) =>
 export const loadChapter = (mangaId: string, chapterId: string) => {
   return (dispatch: SetChapterDispatch) => {
     api.chapter(mangaId, chapterId)
-      .then(({ chapter }) => dispatch({ type: 'MANGA_DISCOVER_SET_CHAPTER', payload: chapter }));
+      .then(({ chapter }) => dispatch({ type: 'MANGA_SET_CHAPTER', payload: chapter }))
   };
 };
 
 export const loadManga = (mangaId: string)  => {
   return (dispatch: SetMangaDispatch) => {
     api.show(mangaId)
-      .then(({ manga }) => dispatch({ type: 'MANGA_DISCOVER_SET_MANGA', payload: manga }));
+      .then(({ manga }) => dispatch({ type: 'MANGA_SET_MANGA', payload: manga }));
   };
 };
 
 export const loadAll = () => {
   return (dispatch: SetMangasDispatch) => {
     return api.all()
-      .then(mangas => dispatch({ type: 'MANGA_DISCOVER_SET_ALL', payload: mangas }));
+      .then(mangas => dispatch({ type: 'MANGA_SET_ALL', payload: mangas }));
   };
 };
 
@@ -55,12 +55,12 @@ export const cacheChapter = (mangaId: string, chapterId: string) => {
     cacheChapterAsync(mangaId, chapterId)
       .then(({ chapter, manga }) => {
         dispatch({
-          type: 'MANGA_DISCOVER_SET_MANGA',
+          type: 'MANGA_SET_MANGA',
           payload: { ...manga, cached: true },
         });
 
         return dispatch({
-          type: 'MANGA_DISCOVER_SET_CHAPTER',
+          type: 'MANGA_SET_CHAPTER',
           payload: { ...chapter, cached: true },
         });
       });

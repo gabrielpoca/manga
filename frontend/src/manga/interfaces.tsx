@@ -50,17 +50,17 @@ export interface Reducer {
 }
 
 export interface SetChapterAction {
-  type: 'MANGA_DISCOVER_SET_CHAPTER';
+  type: 'MANGA_SET_CHAPTER';
   payload: ChapterFull;
 }
 
 export interface SetMangaAction {
-  type: 'MANGA_DISCOVER_SET_MANGA';
+  type: 'MANGA_SET_MANGA';
   payload: MangaFull;
 }
 
 export interface SetMangasAction {
-  type: 'MANGA_DISCOVER_SET_ALL';
+  type: 'MANGA_SET_ALL';
   payload: Array<MangaPreview>;
 }
 

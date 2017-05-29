@@ -9,7 +9,7 @@ const initialState = {
 
 export default (state: Reducer = initialState, action: Action): Reducer => {
   switch (action.type) {
-    case 'MANGA_DISCOVER_SET_MANGA':
+    case 'MANGA_SET_MANGA': {
       const manga = action.payload;
       const newManga = { ...state.mangaById[manga.id], ...manga };
 
@@ -17,9 +17,11 @@ export default (state: Reducer = initialState, action: Action): Reducer => {
         ...state,
         mangaById: { ...state.mangaById, [manga.id]:  newManga },
       };
-    case 'MANGA_DISCOVER_SET_ALL':
+    }
+    case 'MANGA_SET_ALL': {
       return { ...state, allManga: action.payload };
-    case 'MANGA_DISCOVER_SET_CHAPTER':
+    }
+    case 'MANGA_SET_CHAPTER': {
       const chapter = action.payload;
       const newChapter = { ...state.chapterById[chapter.id], ...chapter };
 
@@ -30,6 +32,7 @@ export default (state: Reducer = initialState, action: Action): Reducer => {
           [chapter.id]: newChapter
         }
       };
+    }
     default:
       return state;
   }
