@@ -1,9 +1,9 @@
-import { filter } from 'lodash';
+import { filter, get } from 'lodash';
 import { Reducer, Action } from '../interfaces';
 
 const initialState = {
   allManga: [],
-  chapterById: {},
+  chapterByMangaId: {},
   mangaById: {},
 };
 
@@ -23,13 +23,16 @@ export default (state: Reducer = initialState, action: Action): Reducer => {
     }
     case 'MANGA_SET_CHAPTER': {
       const chapter = action.payload;
-      const newChapter = { ...state.chapterById[chapter.id], ...chapter };
+      const newChapter = { ...state.chapterByMangaId[chapter.id], ...chapter };
 
       return {
         ...state,
-        chapterById: {
-          ...state.chapterById,
-          [chapter.id]: newChapter
+        chapterByMangaId: {
+          ...state.chapterByMangaId,
+          [chapter.mangaId]: {
+            ...state.chapterByMangaId[chapter.mangaId],
+            [chapter.id]: newChapter
+          }
         }
       };
     }
@@ -47,9 +50,9 @@ export const getMangas = (state: { manga: Reducer }) => {
 };
 
 export const getCachedChapters = (state: { manga: Reducer }, mangaId: string) => {
-  return filter(state.manga.chapterById, { cached: true, mangaId });
+  return filter(state.manga.chapterByMangaId[mangaId], { cached: true });
 };
 
 export const getChapter = (state: { manga: Reducer }, mangaId: string, chapterId: string) => {
-  return state.manga.chapterById[chapterId];
+  return get(state.manga.chapterByMangaId, `${mangaId}.${chapterId}`);
 };

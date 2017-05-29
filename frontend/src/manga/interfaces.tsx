@@ -40,11 +40,13 @@ export interface MangaFull {
 }
 
 export interface Reducer {
-  chapterById: {
-    [id: string]: ChapterFull
-  };
   mangaById: {
     [id: string]: MangaFull
+  };
+  chapterByMangaId: {
+    [id: string]: {
+      [id: string]: ChapterFull
+    }
   };
   allManga: Array<MangaPreview>;
 }
