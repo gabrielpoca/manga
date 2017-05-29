@@ -17,12 +17,14 @@ interface ShowProps {
   manga: manga.interfaces.MangaFull;
   chapter: manga.interfaces.ChapterFull;
   loadChapter: typeof manga.actions.loadChapter;
+  readingChapter: typeof manga.actions.readingChapter;
 }
 
 class Show extends React.Component<ShowProps & RouteComponentProps<ParamsProps>, {}> {
-  async componentWillMount() {
+  componentWillMount() {
     const { mangaId, chapterId } = this.props.match.params;
     this.props.loadChapter(mangaId, chapterId);
+    this.props.readingChapter(mangaId, chapterId);
   }
 
   render() {
@@ -51,6 +53,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators(
     {
       loadChapter: manga.actions.loadChapter,
+      readingChapter: manga.actions.readingChapter,
     },
     dispatch
   );

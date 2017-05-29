@@ -48,7 +48,29 @@ export interface Reducer {
       [id: string]: ChapterFull
     }
   };
+  ongoingChapterByMangaId: {
+    [id: string]: string
+  };
+  finishedChapterByMangaId: {
+    [id: string]: Array<string>
+  };
   allManga: Array<MangaPreview>;
+}
+
+export interface SetReadingChapterAction {
+  type: 'MANGA_READING_CHAPTER';
+  payload: {
+    mangaId: string,
+    chapterId: string,
+  };
+}
+
+export interface SetFinishedChapterAction {
+  type: 'MANGA_FINISHED_CHAPTER';
+  payload: {
+    mangaId: string,
+    chapterId: string,
+  };
 }
 
 export interface SetChapterAction {
@@ -66,4 +88,9 @@ export interface SetMangasAction {
   payload: Array<MangaPreview>;
 }
 
-export type Action = SetMangaAction | SetMangasAction | SetChapterAction;
+export type Action =
+  SetMangaAction |
+  SetMangasAction |
+  SetChapterAction |
+  SetReadingChapterAction |
+  SetFinishedChapterAction;

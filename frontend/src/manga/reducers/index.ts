@@ -5,6 +5,8 @@ const initialState = {
   allManga: [],
   chapterByMangaId: {},
   mangaById: {},
+  ongoingChapterByMangaId: {},
+  finishedChapterByMangaId: {},
 };
 
 export default (state: Reducer = initialState, action: Action): Reducer => {
@@ -36,6 +38,29 @@ export default (state: Reducer = initialState, action: Action): Reducer => {
         }
       };
     }
+    case 'MANGA_READING_CHAPTER': {
+      const { mangaId, chapterId } = action.payload;
+      return {
+        ...state,
+        ongoingChapterByMangaId: {
+          ...state.ongoingChapterByMangaId,
+          [mangaId]: chapterId,
+        }
+      };
+    }
+    case 'MANGA_FINISHED_CHAPTER': {
+      const { mangaId, chapterId } = action.payload;
+      return {
+        ...state,
+        finishedChapterByMangaId: {
+          ...state.finishedChapterByMangaId,
+          [mangaId]: [
+            chapterId,
+            ...state.finishedChapterByMangaId[mangaId],
+          ]
+        }
+      };
+    }
     default:
       return state;
   }
@@ -47,6 +72,14 @@ export const getManga = (state: { manga: Reducer }, mangaId: string) => {
 
 export const getMangas = (state: { manga: Reducer }) => {
   return state.manga.allManga;
+};
+
+export const getOngoingMangas = (state: { manga: Reducer })  => {
+  return state.manga.ongoingChapterByMangaId;
+};
+
+export const getOngoingChapter = (state: { manga: Reducer }, mangaId: string) => {
+  return state.manga.ongoingChapterByMangaId[mangaId];
 };
 
 export const getCachedChapters = (state: { manga: Reducer }, mangaId: string) => {

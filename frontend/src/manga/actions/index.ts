@@ -3,6 +3,8 @@ import {
   SetMangaAction,
   SetMangasAction,
   SetChapterAction,
+  SetReadingChapterAction,
+  SetFinishedChapterAction,
   ChapterFull,
 } from '../interfaces';
 
@@ -10,10 +12,25 @@ declare type SetMangaDispatch = (action: SetMangaAction) => any;
 declare type SetMangasDispatch = (action: SetMangasAction) => any;
 declare type SetChapterDispatch = (action: SetChapterAction | SetMangaAction) => any;
 
+export const readingChapter = (mangaId: string, chapterId: string): SetReadingChapterAction => {
+  return {
+    type: 'MANGA_READING_CHAPTER',
+    payload: { mangaId, chapterId },
+  };
+};
+
+export const finishedChapter = (mangaId: string, chapterId: string): SetFinishedChapterAction => {
+  return {
+    type: 'MANGA_FINISHED_CHAPTER',
+    payload: { mangaId, chapterId },
+  };
+};
+
 export const loadChapter = (mangaId: string, chapterId: string) => {
   return (dispatch: SetChapterDispatch) => {
     api.chapter(mangaId, chapterId)
       .then(({ chapter }) => dispatch({ type: 'MANGA_SET_CHAPTER', payload: chapter }))
+      .catch(err => console.log(err));
   };
 };
 

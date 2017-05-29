@@ -10,6 +10,9 @@ import * as manga from '../../manga';
 interface ListProps {
   loadAll: typeof manga.actions.loadAll;
   mangas: Array<manga.interfaces.MangaPreview>;
+  ongoingMangas: {
+    [id: string]: string
+  };
 }
 
 interface ListState {
@@ -54,6 +57,7 @@ class List extends React.Component<ListProps & RouteComponentProps<{}>, ListStat
     return <MangaList
       onSearch={this.handleChange}
       mangas={this.mangasPage()}
+      ongoingMangas={this.props.ongoingMangas}
       search={this.state.query}
     />;
   }
@@ -62,6 +66,7 @@ class List extends React.Component<ListProps & RouteComponentProps<{}>, ListStat
 const mapStateToProps = (state: any) => {
   return {
     mangas: manga.filters.getMangas(state),
+    ongoingMangas: manga.filters.getOngoingMangas(state),
   };
 };
 

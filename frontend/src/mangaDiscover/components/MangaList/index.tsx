@@ -13,6 +13,9 @@ const styles = require('./styles.css');
 
 export interface MangaProps {
   mangas: Array<manga.interfaces.MangaPreview>;
+  ongoingMangas: {
+    [id: string]: string
+  };
   search: string | undefined;
   onSearch(query: string): any;
 }
@@ -29,6 +32,16 @@ const GridImage = styled(Cover)`
 `;
 
 export default class MangaList extends React.Component<MangaProps, null> {
+  renderOngoing(manga: manga.interfaces.MangaPreview) {
+    if (!this.props.ongoingMangas[manga.id]) {
+      return;
+    }
+
+    return <span>
+      Reading on chapter {this.props.ongoingMangas[manga.id]}
+    </span>;
+  }
+
   render() {
     return <div>
       <div className={styles.header}>
@@ -50,6 +63,7 @@ export default class MangaList extends React.Component<MangaProps, null> {
             >
               <GridImage cover={manga.cover} />
               <h2 className={styles.mangaTitle}>{manga.name}</h2>
+              {this.renderOngoing(manga)}
             </Link>
           ))}
         </div>

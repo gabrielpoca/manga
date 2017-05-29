@@ -14,6 +14,7 @@ interface ParamsProps {
 interface ShowProps {
   manga: manga.interfaces.MangaFull;
   mangaId: string;
+  ongoingChapter: string;
   canWorkOffline: boolean;
   cachedChapters: Array<string>;
   loadManga: (mangaId: string) => any;
@@ -47,6 +48,7 @@ class Show extends React.Component<ShowProps & RouteComponentProps<ParamsProps>,
     }
 
     return <MangaShow
+      ongoingChapter={this.props.ongoingChapter}
       cachedChapters={this.props.cachedChapters}
       manga={this.props.manga}
       onOffline={this.canWorkOffline ? this.handleOffline : undefined}
@@ -61,6 +63,7 @@ const mapStateToProps = (state: any, props: RouteComponentProps<ParamsProps>) =>
     .map(chapter => chapter.id);
 
   return {
+    ongoingChapter: manga.filters.getOngoingChapter(state, mangaId),
     canWorkOffline: offlineCapabilities.filters.canWorkOffline(state),
     manga: manga.filters.getManga(state, mangaId),
     mangaId,
