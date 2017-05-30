@@ -2,12 +2,14 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 const styles = require('./styles.css');
+
 import { spacing, maxWidth, fontSize } from '../../../styles';
 
 import * as manga from 'manga';
 import ChapterItem from '../ChapterItem';
 import Cover from '../Cover';
 import Button from '../../../components/Button';
+import { H1, Level } from '../../../components/Heading';
 import Header from '../Header';
 
 interface Props {
@@ -39,7 +41,9 @@ const MangaShow = ({ manga, cachedChapters, onOffline, ongoingChapter }: Props) 
   return <div>
     <Header />
     <div className={styles.grid}>
-      <h1 className={styles.title}>{name}</h1>
+      <div className={styles.title}>
+        <H1 level={Level.h1}>{name}</H1>
+      </div>
       <Cover className={styles.gridImage} cover={manga.cover} />
       <div className={styles.gridButton}>
         {renderButton(manga, ongoingChapter)}

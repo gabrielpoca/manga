@@ -10,12 +10,8 @@
 }
 
 .title {
-  font-size: var(--fontSize-large);
-  font-weight: normal;
   grid-column: 1 / span 2;
   grid-row: 1;
-  letter-spacing: 2px;
-  text-transform: uppercase;
 }
 
 .gridImage {
