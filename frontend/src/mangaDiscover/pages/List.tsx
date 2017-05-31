@@ -45,9 +45,9 @@ class List extends React.Component<ListProps & RouteComponentProps<{}>, ListStat
     }
   }
 
-  mangasPage = throttle(() => {
+  mangasPage = () => {
     return this.mangas().slice(0, 40);
-  }, 150, { leading: true, trailing: true });
+  }
 
   handleChange = (query: string) => {
     this.setState({ query });
