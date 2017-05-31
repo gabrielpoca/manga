@@ -1,33 +1,78 @@
+.root {
+  background-blend-mode: exclusion;
+  background-color: #d08282;
+  min-height: 100%;
+  padding-bottom: var(--spacing-large);
+}
+
+.close {
+  position: absolute;
+  top: var(--spacing-small);
+  left: var(--spacing-small);
+  width: 24px;
+  height: 24px;
+}
+
+.close::before {
+  content: '';
+  width: 30px;
+  height: 2px;
+  background-color: black;
+  position: absolute;
+  transform: translate(-2px, 10px) rotate(45deg);
+}
+
+.close::after {
+  content: '';
+  width: 30px;
+  height: 2px;
+  background-color: black;
+  position: absolute;
+  transform: translate(-2px, 10px) rotate(-45deg);
+}
+
+.closeLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .grid {
-  align-items: start;
+  background-color: var(--color-white);
   display: grid;
   grid-column-gap: var(--spacing-large);
   grid-row-gap: var(--spacing-normal);
-  grid-template-columns: 200px auto;
+  grid-template-columns: 186px auto;
   margin: 0 auto;
   max-width: var(--maxWidth);
-  padding: var(--spacing-normal);
+  padding: 70px;
+  position: relative;
 }
 
-.title {
-  grid-column: 1 / span 2;
+.image {
+  grid-column: 1;
   grid-row: 1;
 }
 
-.gridImage {
-  grid-column: 1;
-  grid-row: 2;
+.title {
+  margin-top: var(--spacing-normal);
+  margin-bottom: var(--spacing-normal);
 }
 
-.gridChapters {
+.chapters {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-column: 2;
-  grid-row: 2 / span 3;
+  grid-column: 1 /span 2;
   grid-row-gap: var(--spacing-small);
+  grid-row: 3;
+  grid-template-columns: 1fr;
 }
 
-.gridButton {
-  grid-column: 1;
-  grid-row: 3;
+.details {
+  grid-column: 2;
+  grid-row: 1;
 }

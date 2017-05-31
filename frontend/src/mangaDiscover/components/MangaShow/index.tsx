@@ -19,48 +19,100 @@ interface Props {
   ongoingChapter: string;
 }
 
-const renderButton = (manga: any, ongoingChapter: string) => {
-  if (!ongoingChapter) {
-    return <Link to={`/manga/${manga.id}/chapter/1`}>
-      <Button>
-        Start Reading
-      </Button>
-    </Link>;
-  } else {
-    return <Link to={`/manga/${manga.id}/chapter/${ongoingChapter}`}>
-      <Button>
-        Chapter {ongoingChapter}
-      </Button>
-    </Link>;
+interface State {
+  backgroundImage?: string;
+  backgroundWidth?: number;
+  backgroundHeight?: number;
+}
+
+class MangaShow extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {};
+    this.updateStyles(props.manga.cover);
   }
-};
 
-const MangaShow = ({ manga, cachedChapters, onOffline, ongoingChapter }: Props) => {
-  const { id, name, cover, chapters = [] } = manga;
+  componentWillReceiveProps(props: Props) {
+    this.updateStyles(props.manga.cover);
+  }
 
-  return <div>
-    <Header />
-    <div className={styles.grid}>
-      <div className={styles.title}>
-        <H1 level={Level.h1}>{name}</H1>
+  updateStyles(cover: string) {
+    const image = document.createElement('img');
+    image.onload = () => {
+      this.setState({
+        backgroundImage: cover,
+        backgroundWidth: image.width,
+        backgroundHeight: image.height,
+      });
+    };
+    image.src = this.props.manga.cover;
+  }
+
+  backgroundStyles = () => {
+    const { backgroundImage, backgroundWidth, backgroundHeight } = this.state;
+
+    if (!backgroundImage || !backgroundWidth || !backgroundHeight) {
+      return;
+    }
+
+    return {
+      backgroundPosition: `${backgroundWidth / 2}px ${backgroundHeight / 2}px`,
+      backgroundImage: `url('${this.props.manga.cover}')`
+    };
+  }
+
+  renderButton = () => {
+    const { manga, ongoingChapter } = this.props;
+
+    if (!ongoingChapter) {
+      return <Link to={`/manga/${manga.id}/chapter/1`}>
+        <Button>
+        Start Reading
+        </Button>
+        </Link>;
+    } else {
+      return <Link to={`/manga/${manga.id}/chapter/${ongoingChapter}`}>
+        <Button>
+        Chapter {ongoingChapter}
+        </Button>
+        </Link>;
+    }
+  }
+
+  render() {
+    const { manga, cachedChapters, onOffline, ongoingChapter } = this.props;
+    const { id, name, cover, chapters = [] } = manga;
+
+    return <div
+      style={this.backgroundStyles()}
+      className={styles.root}
+    >
+      <Header />
+      <div className={styles.grid}>
+        <Link to="/" className={styles.close}>
+          <span className={styles.closeLabel}>Back</span>
+        </Link>
+        <Cover className={styles.image} cover={manga.cover} />
+        <div className={styles.details}>
+          <div className={styles.title}>
+            <H1 level={Level.h1}>{name}</H1>
+          </div>
+          {this.renderButton()}
+        </div>
+        <div className={styles.chapters}>
+          {chapters.map(chapter => (
+            <ChapterItem
+              cached={cachedChapters.indexOf(chapter.id + '') !== -1}
+              key={chapter.id}
+              id={id}
+              chapter={chapter}
+              onOffline={onOffline}
+            />
+          ))}
+        </div>
       </div>
-      <Cover className={styles.gridImage} cover={manga.cover} />
-      <div className={styles.gridButton}>
-        {renderButton(manga, ongoingChapter)}
-      </div>
-      <div className={styles.gridChapters}>
-        {chapters.map(chapter => (
-          <ChapterItem
-            cached={cachedChapters.indexOf(chapter.id + '') !== -1}
-            key={chapter.id}
-            id={id}
-            chapter={chapter}
-            onOffline={onOffline}
-          />
-        ))}
-      </div>
-    </div>
-  </div>;
-};
+    </div>;
+  }
+}
 
 export default MangaShow;
