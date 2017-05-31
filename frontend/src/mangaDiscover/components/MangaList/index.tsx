@@ -21,8 +21,8 @@ export interface MangaProps {
 }
 
 const GridImage = styled(Cover)`
-  flex-basis: 200px;
-  height: 200px;
+  flex-basis: var(--gridItemSize);
+  height: var(--gridItemSize);
   margin-bottom: ${spacing.small};
   transition: all .2s ease-in-out;
 
@@ -43,7 +43,7 @@ export default class MangaList extends React.Component<MangaProps, null> {
   }
 
   render() {
-    return <div>
+    return <div className={styles.root}>
       <div className={styles.header}>
         <Header />
       </div>
