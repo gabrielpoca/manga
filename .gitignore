@@ -34,4 +34,5 @@ frontend/build
 manga_api.tar.gz
 bin/server
 priv/build
+priv/client
 node_modules
