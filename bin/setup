@@ -1,0 +1,2 @@
+mix deps.get
+[ -f .env ] || cp .env.sample .env
