@@ -37,7 +37,15 @@ defmodule MangaApi.Web.Endpoint do
     signing_salt: "/Y2NsQeL"
 
   plug CORSPlug
+  plug :catch_all_but_api
   plug MangaApi.Web.Router
+
+  def catch_all_but_api(%Plug.Conn{request_path: name} = conn, _opts) do
+    case String.starts_with?(name, "/api") do
+      true -> conn
+      _ -> send_file(conn, 200, "priv/client/index.html")
+    end
+  end
 
   @doc """
   Dynamically loads configuration from the system environment
