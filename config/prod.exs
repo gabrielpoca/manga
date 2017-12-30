@@ -16,7 +16,7 @@ use Mix.Config
 config :manga_api, MangaApi.Web.Endpoint,
   http: [port: {:system, "PORT"}],
   server: true,
-  on_init: {MangaApi.Web.Endpoint, :load_from_system_env, []},
+  load_from_system_env: true,
   secret_key_base: "${SECRET_KEY_BASE}",
   url: [host: "${HOST}", port: {:system, "PORT"}]
 
