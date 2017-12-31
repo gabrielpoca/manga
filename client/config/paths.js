@@ -9,7 +9,7 @@ const url = require('url')
 const appDirectory = fs.realpathSync(process.cwd() + '/client')
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath)
 const appPackageJson = path.resolve(process.cwd(), 'package.json')
-const appBuild = path.resolve(process.cwd(), 'priv', 'client')
+const appBuild = path.resolve(process.cwd(), 'priv', 'static')
 
 const envPublicUrl = process.env.PUBLIC_URL
 

@@ -6,7 +6,7 @@
 use Mix.Config
 
 config :mix_docker,
-  image: "gabrielpoca/manga_api"
+  image: "gabrielpoca/manga"
 
 # Configures the endpoint
 config :manga_api, MangaApi.Web.Endpoint,

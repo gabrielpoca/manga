@@ -22,7 +22,7 @@ config :manga_api, MangaApi.Web.Endpoint,
 
 config :manga_api, MangaApi.MangaClient.Client,
   api: MangaApi.MangaClient.API,
-  key: System.get_env("API_KEY")
+  key: "${API_KEY}"
 
 # Do not print debug messages in production
 config :logger, level: :info

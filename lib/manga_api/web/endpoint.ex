@@ -9,7 +9,7 @@ defmodule MangaApi.Web.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static.IndexHtml, at: "/"
   plug Plug.Static,
-    at: "/", from: "priv/client", gzip: false
+    at: "/", from: {:manga_api, "priv/static"}, gzip: false
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -43,7 +43,7 @@ defmodule MangaApi.Web.Endpoint do
   def catch_all_but_api(%Plug.Conn{request_path: name} = conn, _opts) do
     case String.starts_with?(name, "/api") do
       true -> conn
-      _ -> send_file(conn, 200, "priv/client/index.html")
+      _ -> send_file(conn, 200, Application.app_dir(:manga_api, "priv/static/index.html"))
     end
   end
 

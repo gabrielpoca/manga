@@ -1,0 +1,8 @@
+.git/*
+.gitignore
+node_modules/*
+priv/client/*
+priv/build/*
+_build/*
+test/*
+deps/*
