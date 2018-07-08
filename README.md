@@ -8,24 +8,25 @@ Development
 
 Prerequisites:
 
-  * Elixir 1.5.2
-  * Node
-  * Yarn
-  * An account in [Mashape's market](https://market.mashape.com). Create an
+  * elixir 1.5.2
+  * node
+  * yarn
+  * an account in [Mashape's market](https://market.mashape.com). Create an
     application and include the [Manga Scrapper API](https://market.mashape.com/doodle/manga-scraper).
     Save the application's API KEY.
 
 Setup:
 
   * Setup environment with `bin/setup`
-  * Update the environment variables in `.env`.
+  * Update the environment variables in `.envrc`.
 
 Running in development:
 
-  * Start Phoenix server with `bin/server`
-  * Start React client with `bin/client`
+  * source the environment variables `source .envrc` (you can use [direnv](https://github.com/direnv/direnv) to automate this step)
+  * start Phoenix server with `bin/server`
+  * start React client with `bin/client`
 
-Now you can visit the api in http://localhost:4000/api/mangas and the client in http://localhost:3000.
+Now visit the api in http://localhost:4000/api/mangas and the client in http://localhost:3000.
 
 Production
 ----------
