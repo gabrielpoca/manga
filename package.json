@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-boost": "^0.1.10",
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
@@ -25,6 +26,8 @@
     "file-loader": "1.1.5",
     "fs-extra": "3.0.1",
     "global": "^4.3.2",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.9.2",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "object-assign": "4.1.1",
@@ -35,6 +38,7 @@
     "promise": "8.0.1",
     "raf": "3.4.0",
     "react": "^16.0.0",
+    "react-apollo": "^2.1.9",
     "react-burger-menu": "^2.1.11",
     "react-css-modules": "^4.7.1",
     "react-dev-utils": "^4.2.1",
@@ -106,7 +110,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "prettier": "^1.8.2",
+    "prettier": "^1.13.7",
     "stylelint": "^8.2.0",
     "stylelint-order": "^0.7.0"
   }

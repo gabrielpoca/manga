@@ -1,56 +1,56 @@
-import * as React from 'react'
-import { findDOMNode } from 'react-dom'
-import { Link } from 'react-router-dom'
+import * as React from 'react';
+import { findDOMNode } from 'react-dom';
+import { Link } from 'react-router-dom';
 
-import ImageWithFallback from '../../../components/ImageWithFallback'
+import ImageWithFallback from '../../../components/ImageWithFallback';
 
-const styles = require('./styles.css')
+const styles = require('./styles.css');
 
 class MangaItem extends React.Component {
-  state = { width: 0 }
-  el = null
+  state = { width: 0 };
+  el = null;
 
   componentDidMount() {
-    window.addEventListener('resize', this.updateState)
-    this.updateState()
+    window.addEventListener('resize', this.updateState);
+    this.updateState();
   }
 
   updateState = () => {
     if (!this.el) {
-      return
+      return;
     }
 
     this.setState({
       width: findDOMNode(this.el).clientWidth
-    })
-  }
+    });
+  };
 
   get style() {
     if (this.state.width) {
-      return { height: `${this.state.width}px` }
+      return { height: `${this.state.width}px` };
     } else {
-      return {}
+      return {};
     }
   }
 
   renderOngoing = () => {
     if (!this.props.manga.ongoingChapter) {
-      return null
+      return null;
     }
 
     return (
       <span className={styles.reading}>
         Reading on chapter {this.props.manga.ongoingChapter}
       </span>
-    )
-  }
+    );
+  };
 
   render() {
     return (
       <Link
         ref={el => (this.el = el)}
         className={styles.root}
-        to={`/manga/${this.props.manga.id}`}
+        to={`/manga${this.props.manga.href}`}
       >
         <ImageWithFallback
           style={this.style}
@@ -63,8 +63,8 @@ class MangaItem extends React.Component {
           {this.renderOngoing()}
         </div>
       </Link>
-    )
+    );
   }
 }
 
-export default MangaItem
+export default MangaItem;

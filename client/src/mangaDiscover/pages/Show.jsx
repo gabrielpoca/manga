@@ -1,66 +1,69 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
-import { bindActionCreators } from 'redux'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import * as manga from '../../manga'
-import Layout from '../components/Layout'
-import Header from '../../components/Header'
-import MangaShow from '../components/MangaShow'
+import * as manga from '../../manga';
+import Layout from '../components/Layout';
+import Header from '../../components/Header';
+import MangaShow from '../components/MangaShow';
+
+const MANGA_QUERY = gql`
+  query($id: String!) {
+    manga(mangaId: $id) {
+      name
+      href
+      mangaId
+      cover
+      chapters {
+        name
+        chapterId
+        mangaId
+      }
+    }
+  }
+`;
 
 class Show extends React.Component {
-  async componentWillMount() {
-    this.props.loadManga(this.props.mangaId).catch(() => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          this.props
-            .loadManga(this.props.mangaId)
-            .then(resolve)
-            .catch(reject)
-        }, 3000)
-      })
-    })
-  }
-
   renderHeader() {
-    return <Header withBackNavigation="/" />
+    return <Header withBackNavigation="/" />;
   }
 
   render() {
-    if (!this.props.manga) {
-      return null
-    }
-
     return (
       <Layout header={this.renderHeader()}>
-        <MangaShow
-          ongoingChapter={this.props.ongoingChapter}
-          readChapters={this.props.readChapters}
-          manga={this.props.manga}
-        />
+        <Query
+          query={MANGA_QUERY}
+          variables={{ id: this.props.match.params.mangaId }}
+        >
+          {({ loading, error, data }) => {
+            if (loading) return null;
+
+            return (
+              <MangaShow
+                ongoingChapter={this.props.ongoingChapter || false}
+                readChapters={this.props.readChapters || []}
+                manga={data.manga}
+              />
+            );
+          }}
+        </Query>
       </Layout>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state, props) => {
-  const { mangaId } = props.match.params
-
   return {
-    ongoingChapter: manga.filters.getOngoingChapter(state, mangaId),
-    manga: manga.filters.getManga(state, mangaId),
-    readChapters: manga.filters.getReadChaptersForManga(state, mangaId),
-    mangaId
-  }
-}
+    readChapters: manga.filters.getReadChaptersForManga(
+      state,
+      props.match.params.mangaId
+    ),
+    ongoingChapter: manga.filters.getOngoingChapter(
+      state,
+      props.match.params.mangaId
+    )
+  };
+};
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      loadManga: manga.actions.loadManga
-    },
-    dispatch
-  )
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Show))
+export default connect(mapStateToProps)(Show);

@@ -1,65 +1,50 @@
-import * as React from 'react'
-import CSSModules from 'react-css-modules'
-import { Link } from 'react-router-dom'
-import { isArray } from 'lodash'
+import * as React from 'react';
+import CSSModules from 'react-css-modules';
+import { Link } from 'react-router-dom';
+import { isArray } from 'lodash';
 
-import ChapterItem from '../ChapterItem'
-import Cover from '../Cover'
-import Button from '../../../components/Button'
-import ChaptersHeader from '../ChaptersHeader'
-import { H1, H2 } from '../../../components/Heading'
+import ChapterItem from '../ChapterItem';
+import Cover from '../Cover';
+import Button from '../../../components/Button';
+import ChaptersHeader from '../ChaptersHeader';
+import { H1 } from '../../../components/Heading';
 
-import styles from './styles.css'
+import styles from './styles.css';
 
 class MangaShow extends React.Component {
-  get loadingStatus() {
-    const chapters = this.props.manga.chapters
-
-    if (isArray(chapters) && chapters.length === 0) {
-      return 'empty'
-    } else if (!chapters) {
-      return 'loading'
-    } else {
-      return 'done'
-    }
-  }
-
   get hasReadChapters() {
-    return this.props.readChapters.length > 0
+    return this.props.readChapters.length > 0;
   }
 
   renderButton = () => {
-    const { manga, ongoingChapter } = this.props
-
-    if (this.loadingStatus === 'loading') {
-      return <H2>Loading...</H2>
-    }
-
-    if (this.loadingStatus !== 'done') {
-      return
-    }
+    const { manga, ongoingChapter } = this.props;
 
     if (!ongoingChapter) {
       return (
-        <Button tag={Link} to={`/manga/${manga.id}/chapter/1`}>
+        <Button tag={Link} to={`/manga/${manga.mangaId}/chapter/1`}>
           Read
         </Button>
-      )
+      );
     } else {
       return (
-        <Button tag={Link} to={`/manga/${manga.id}/chapter/${ongoingChapter}`}>
+        <Button
+          tag={Link}
+          to={`/manga/${manga.mangaId}/chapter/${ongoingChapter}`}
+        >
           Chapter {ongoingChapter}
         </Button>
-      )
+      );
     }
-  }
+  };
 
   renderChapters() {
-    const { manga, readChapters } = this.props
-    const { id, chapters } = manga
+    const { manga, readChapters } = this.props;
+    const { chapters } = manga;
+
+    console.log(chapters);
 
     if (!isArray(chapters)) {
-      return
+      return;
     }
 
     if (chapters.length === 0) {
@@ -70,28 +55,27 @@ class MangaShow extends React.Component {
             while.
           </p>
         </div>
-      )
+      );
     } else {
       return (
         <div className={styles.chapters}>
           <ChaptersHeader showRead={this.hasReadChapters} />
-          {chapters.map(chapter => (
+          {chapters.map((chapter, index) => (
             <ChapterItem
               showRead={this.hasReadChapters}
-              read={readChapters.indexOf(chapter.id + '') !== -1}
-              key={chapter.id}
-              id={id}
+              read={readChapters.indexOf(chapter.chapterId) !== -1}
+              key={chapter.chapterId}
               chapter={chapter}
             />
           ))}
         </div>
-      )
+      );
     }
   }
 
   render() {
-    const { manga } = this.props
-    const { name, cover } = manga
+    const { manga } = this.props;
+    const { name, cover } = manga;
 
     return (
       <div className="root">
@@ -106,8 +90,8 @@ class MangaShow extends React.Component {
         </div>
         {this.renderChapters()}
       </div>
-    )
+    );
   }
 }
 
-export default CSSModules(MangaShow, styles)
+export default CSSModules(MangaShow, styles);

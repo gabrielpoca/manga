@@ -1,79 +1,108 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import * as React from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import ChapterReader from '../components/ChapterReader'
-import Loading from '../components/Loading'
-import * as manga from '../../manga'
+import * as manga from '../../manga';
+import ChapterReader from '../components/ChapterReader';
+import Loading from '../components/Loading';
+
+const CHAPTER_QUERY = gql`
+  query($mangaId: String!, $chapterId: ID!) {
+    chapter(mangaId: $mangaId, chapterId: $chapterId) {
+      name
+      mangaId
+      chapterId
+      pages {
+        pageId
+        src
+      }
+    }
+
+    manga(mangaId: $mangaId) {
+      name
+      href
+      mangaId
+      cover
+      chapters {
+        name
+        chapterId
+        mangaId
+      }
+    }
+  }
+`;
 
 class Show extends React.Component {
-  componentWillMount() {
-    this.loadManga(this.props, true)
+  componentDidMount() {
+    this.markChapterReading(this.props);
   }
 
   componentWillReceiveProps(props) {
-    this.loadManga(props)
+    this.markChapterReading(props);
   }
 
-  loadManga(props, force) {
-    const { mangaId, chapterId } = props.match.params
+  markChapterReading = props => {
+    const { mangaId, chapterId } = props.match.params;
 
-    if (force || mangaId !== this.props.match.params.mangaId) {
-      this.props.loadManga(mangaId)
-    }
+    if (props.ongoingChapter === chapterId) return;
 
-    if (force || chapterId !== this.props.match.params.chapterId) {
-      this.props.loadChapter(mangaId, parseInt(chapterId, 10))
-      this.props.readingChapter(mangaId, parseInt(chapterId, 10))
-    }
-  }
+    this.props.readingChapter(mangaId, chapterId);
+  };
 
   markChapterReader = () => {
-    const { mangaId, chapterId } = this.props.match.params
+    const { mangaId, chapterId } = this.props.match.params;
 
-    this.props.readChapter(mangaId, parseInt(chapterId, 10))
-  }
+    this.props.readChapter(mangaId, chapterId);
+  };
 
   render() {
-    if (!this.props.chapter || !this.props.manga) {
-      return (
-        <Loading
-          manga={this.props.manga}
-          chapterId={this.props.match.params.chapterId}
-        />
-      )
-    }
-
     return (
-      <ChapterReader
-        chapter={this.props.chapter}
-        chapterId={this.props.chapter.id}
-        manga={this.props.manga}
-        onScrollToBottom={this.markChapterReader}
-      />
-    )
-  }
-}
+      <Query query={CHAPTER_QUERY} variables={this.props.match.params}>
+        {({ error, loading, data }) => {
+          if (loading) {
+            return (
+              <Loading
+                manga={this.props.manga || {}}
+                chapterId={this.props.match.params.chapterId}
+              />
+            );
+          }
 
-const mapStateToProps = (state, props) => {
-  const { mangaId, chapterId } = props.match.params
-
-  return {
-    manga: manga.filters.getManga(state, mangaId),
-    chapter: manga.filters.getChapter(state, mangaId, chapterId)
+          return (
+            <ChapterReader
+              chapter={data.chapter}
+              manga={data.manga}
+              onScrollToBottom={this.markChapterReader}
+            />
+          );
+        }}
+      </Query>
+    );
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      loadChapter: manga.actions.loadChapter,
-      loadManga: manga.actions.loadManga,
       readingChapter: manga.actions.readingChapter,
       readChapter: manga.actions.readChapter
     },
     dispatch
-  )
-}
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Show)
+const mapStateToProps = (state, props) => {
+  return {
+    ongoingChapter: manga.filters.getOngoingChapter(
+      state,
+      props.match.params.mangaId
+    )
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Show);

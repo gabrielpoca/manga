@@ -6,7 +6,11 @@ const styles = require('./styles.css');
 
 export default class ChapterItem extends React.Component {
   get chapterId() {
-    return this.props.chapter.id;
+    return this.props.chapter.chapterId;
+  }
+
+  get mangaId() {
+    return this.props.chapter.mangaId;
   }
 
   get name() {
@@ -15,7 +19,7 @@ export default class ChapterItem extends React.Component {
 
   renderName() {
     if (this.name) {
-      return `${this.chapterId}. ${this.name}`;
+      return `${this.name}`;
     } else {
       return `Chapter ${this.chapterId}`;
     }
@@ -28,8 +32,9 @@ export default class ChapterItem extends React.Component {
 
     return (
       <span className={styles.read}>
-        {this.props.read &&
-          <span dangerouslySetInnerHTML={{ __html: readIcon }} />}
+        {this.props.read && (
+          <span dangerouslySetInnerHTML={{ __html: readIcon }} />
+        )}
       </span>
     );
   }
@@ -40,7 +45,7 @@ export default class ChapterItem extends React.Component {
         {this.renderReadMark()}
         <Link
           className={styles.title}
-          to={`/manga/${this.props.id}/chapter/${this.chapterId}`}
+          to={`/manga/${this.mangaId}/chapter/${this.chapterId}`}
         >
           {this.renderName()}
         </Link>

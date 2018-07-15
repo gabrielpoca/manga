@@ -1,66 +1,60 @@
-import * as React from 'react'
+import * as React from 'react';
 
-const styles = require('./styles.css')
+const styles = require('./styles.css');
 
 class Page extends React.Component {
   componentWillMount() {
-    this.addScrollEvent()
+    this.addScrollEvent();
 
-    this.setState({ show: false })
+    this.setState({ show: false });
   }
 
   componentDidMount() {
-    this.handleScroll()
+    this.handleScroll();
   }
 
   componentWillUnmount() {
-    this.removeScrollEvent()
+    this.removeScrollEvent();
   }
 
   get isEnteringScreen() {
-    const windowHeight = document.body.offsetHeight
-    const distanceToWindowBottom = this.el.getBoundingClientRect().top
+    const windowHeight = document.body.offsetHeight;
+    const distanceToWindowBottom = this.el.getBoundingClientRect().top;
 
-    return distanceToWindowBottom < windowHeight * 3
+    return distanceToWindowBottom < windowHeight * 3;
   }
 
   addScrollEvent = () => {
-    document.addEventListener('scroll', this.handleScroll)
-  }
+    document.addEventListener('scroll', this.handleScroll);
+  };
 
   removeScrollEvent = () => {
-    document.removeEventListener('scroll', this.handleScroll)
-  }
+    document.removeEventListener('scroll', this.handleScroll);
+  };
 
   handleScroll = () => {
     if (!this.state.show && this.isEnteringScreen) {
-      this.setState({ show: true })
-      this.removeScrollEvent()
-      this.props.onShow(this.props.page.pageId)
+      this.setState({ show: true });
+      this.removeScrollEvent();
+      this.props.onShow(this.props.id);
     }
-  }
+  };
 
   renderImage() {
     if (this.state.show) {
-      return (
-        <img
-          className={styles.image}
-          key={this.props.page.pageId}
-          src={this.props.page.url}
-        />
-      )
+      return <img className={styles.image} src={this.props.src} />;
     } else {
-      return <div className={styles.placeholder} />
+      return <div className={styles.placeholder} />;
     }
   }
 
   render() {
     return (
-      <div ref={el => (this.el = el)} key={this.props.page.pageId}>
+      <div ref={el => (this.el = el)} key={this.props.id}>
         {this.renderImage()}
       </div>
-    )
+    );
   }
 }
 
-export default Page
+export default Page;
