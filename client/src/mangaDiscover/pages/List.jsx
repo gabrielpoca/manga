@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { filter, sortBy, includes } from 'lodash';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from '../../api';
 
 import * as manga from '../../manga';
 import Search from '../containers/Search';
@@ -11,7 +10,7 @@ import MangaList from '../components/MangaList';
 import EmptyMangaList from '../components/EmptyMangaList';
 import Header from '../../components/Header';
 
-const MANGAS_QUERY = gql`
+const MANGAS_QUERY = `
   query {
     mangas {
       name

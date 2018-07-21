@@ -41,8 +41,6 @@ class MangaShow extends React.Component {
     const { manga, readChapters } = this.props;
     const { chapters } = manga;
 
-    console.log(chapters);
-
     if (!isArray(chapters)) {
       return;
     }

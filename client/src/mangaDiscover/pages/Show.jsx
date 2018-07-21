@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from '../../api';
 
 import * as manga from '../../manga';
 import Layout from '../components/Layout';
 import Header from '../../components/Header';
 import MangaShow from '../components/MangaShow';
 
-const MANGA_QUERY = gql`
+const MANGA_QUERY = `
   query($id: String!) {
     manga(mangaId: $id) {
       name
@@ -35,7 +34,7 @@ class Show extends React.Component {
           query={MANGA_QUERY}
           variables={{ id: this.props.match.params.mangaId }}
         >
-          {({ loading, error, data }) => {
+          {({ loading, data }) => {
             if (loading) return null;
 
             return (

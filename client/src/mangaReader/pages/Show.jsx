@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from '../../api';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -8,7 +7,7 @@ import * as manga from '../../manga';
 import ChapterReader from '../components/ChapterReader';
 import Loading from '../components/Loading';
 
-const CHAPTER_QUERY = gql`
+const CHAPTER_QUERY = `
   query($mangaId: String!, $chapterId: ID!) {
     chapter(mangaId: $mangaId, chapterId: $chapterId) {
       name
@@ -59,7 +58,7 @@ class Show extends React.Component {
   render() {
     return (
       <Query query={CHAPTER_QUERY} variables={this.props.match.params}>
-        {({ error, loading, data }) => {
+        {({ loading, data }) => {
           if (loading) {
             return (
               <Loading
