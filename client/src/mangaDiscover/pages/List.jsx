@@ -15,7 +15,6 @@ const MANGAS_QUERY = gql`
   query {
     mangas {
       name
-      href
       mangaId
       cover
     }

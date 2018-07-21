@@ -10,7 +10,7 @@ class MangaList extends React.Component {
     return (
       <div className={styles.list}>
         {this.props.mangas.map(manga => (
-          <MangaItem key={manga.href} manga={manga} />
+          <MangaItem key={manga.mangaId} manga={manga} />
         ))}
       </div>
     );

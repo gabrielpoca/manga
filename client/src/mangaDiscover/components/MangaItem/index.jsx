@@ -21,7 +21,7 @@ class MangaItem extends React.Component {
     }
 
     this.setState({
-      width: findDOMNode(this.el).clientWidth
+      width: findDOMNode(this.el).clientWidth,
     });
   };
 
@@ -50,7 +50,7 @@ class MangaItem extends React.Component {
       <Link
         ref={el => (this.el = el)}
         className={styles.root}
-        to={`/manga${this.props.manga.href}`}
+        to={`/manga/${this.props.manga.mangaId}`}
       >
         <ImageWithFallback
           style={this.style}

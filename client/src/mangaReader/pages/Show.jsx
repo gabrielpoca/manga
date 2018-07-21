@@ -22,7 +22,6 @@ const CHAPTER_QUERY = gql`
 
     manga(mangaId: $mangaId) {
       name
-      href
       mangaId
       cover
       chapters {
