@@ -1,66 +1,48 @@
 import React from 'react';
 import { GraphQLClient } from 'graphql-request';
 
-// const APIContext = React.createContext();
+import Context from './context';
+import Query from './query';
+import signature from './queryToID';
+import Cache from './cache';
+
+const cache = new Cache();
 const client = new GraphQLClient('http://localhost:4000/api', {});
 
-// class APIProvider extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       request: this.request
-//     };
-//   }
-
-//   request = (query, variables = {}) => client.request(query, variables);
-
-//   render() {
-//     return (
-//       <APIContext.Provider value={this.state}>
-//         {this.props.children}
-//       </APIContext.Provider>
-//     );
-//   }
-// }
-
-class Query extends React.Component {
+class Provider extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      loading: true,
-      data: {},
-      error: null
+      context: {
+        request: this.request
+      }
     };
   }
 
-  componentDidMount() {
-    this.execute(this.props);
-  }
+  request = (query, variables) => {
+    const data = cache.get(signature(query, variables));
 
-  componentWillReceiveProps(props) {
-    if (
-      props.variables === this.props.variables &&
-      props.query === this.props.query
-    ) {
-      return;
+    console.log(signature(query, variables), data);
+
+    if (data) {
+      this.setState({ loading: false, data });
+      return new Promise(resolve => resolve(data));
     }
 
-    this.execute(props);
-  }
-
-  execute(props) {
-    this.setState({ loading: true });
-
-    client
-      .request(props.query, props.variables || {})
-      .then(data => this.setState({ data, loading: false }))
-      .catch(err => this.setState({ err, loading: false }));
-  }
+    return client.request(query, variables).then(data => {
+      cache.save(signature(query, variables), data);
+      return data;
+    });
+  };
 
   render() {
-    return this.props.children(this.state);
+    return (
+      <Context.Provider value={this.state.context}>
+        {this.props.children}
+      </Context.Provider>
+    );
   }
 }
 
-export { Query };
+export { Query, Provider };
